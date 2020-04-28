@@ -13,10 +13,16 @@ public class Book {
 	private int discountPrice;
 	private int stock;
 	private Date registeredDate;
-	
+	private int point;
 	
 	public Book() {}
 	
+	public int getPoint() {
+		return point;
+	}
+	public void setPoint(int point) {
+		this.point = point;
+	}
 	public int getStock() {
 		return stock;
 	}

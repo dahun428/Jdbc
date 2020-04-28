@@ -135,7 +135,8 @@ public class BookDAO {
 		pstmt.setString(5, book.getPublisher());
 		pstmt.setInt(6, book.getPrice());
 		pstmt.setInt(7, book.getStock());
-		pstmt.setInt(8, book.getNo());
+		pstmt.setInt(8, book.getPoint());
+		pstmt.setInt(9, book.getNo());
 		
 		pstmt.executeUpdate();
 		

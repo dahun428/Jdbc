@@ -8,6 +8,7 @@ import com.sample.bookstore.vo.Answer;
 import com.sample.bookstore.vo.Book;
 import com.sample.bookstore.vo.Order;
 import com.sample.bookstore.vo.Question;
+import com.sample.bookstore.vo.Review;
 import com.sample.bookstore.vo.User;
 
 public class Bookstore {
@@ -20,9 +21,9 @@ public class Bookstore {
 
 		while(true) {
 			
-			System.out.println("---------------------------------------------------------------------");
-			System.out.println("1.가입	2.책 검색	3.책 정보	4.주문	5.내주문	6.주문정보	7.문의게시판	0.종료");
-			System.out.println("---------------------------------------------------------------------");
+			System.out.println("----------------------------------------------------------------------------------");
+			System.out.println("1.가입	2.책 검색	3.책 정보	4.주문	5.내주문	6.주문정보	7.문의게시판	8.리뷰남기기	0.종료");
+			System.out.println("----------------------------------------------------------------------------------");
 			System.out.print("메뉴를 선택해주세요 : 	");
 			
 			int menuNum = KeyboardUtil.nextInt();
@@ -261,6 +262,97 @@ public class Bookstore {
 						System.out.println("해당 질문에 답변이 이미완료되었습니다.");
 					}
 				}
+				
+				
+			} else if (menuNum == 8) {
+				
+				System.out.println("---------------------------------------------------------------------");
+				System.out.println("1.나의 리뷰조회	2.리뷰등록	3.책 리뷰 조회");
+				System.out.println("---------------------------------------------------------------------");
+				int reviewNum = KeyboardUtil.nextInt();
+				if (reviewNum == 1) {
+
+					System.out.println();
+					System.out.println("[나의 리뷰 조회]");
+					System.out.print("아이디를 입력해주세요 : ");
+					String userId = KeyboardUtil.nextString();
+					
+					System.out.println("북넘버\t책제목\t아이디\t작성자\t리뷰글\t제점수는요\t작성일");
+					
+					List<Review> reviews = service.getReviewsByUserId(userId);
+					for(Review review : reviews) {
+						Book book = review.getBook();
+						User user = review.getUser();
+						System.out.println(book.getNo()+"\t"+book.getTitle()+"\t"+user.getUserId()+"\t"
+								+user.getUserName()+"\t"+review.getContent()+"\t"+review.getReviewPoint()+"\t"
+								+review.getReivewRegisteredDate());					
+					}
+					
+				} else if (reviewNum == 2) {
+					
+					System.out.println();
+					System.out.println("[리뷰등록]");
+					System.out.print("아이디를 입력해주세요 : ");
+					String userId = KeyboardUtil.nextString();
+					System.out.print("책 번호를 입력해주세요 : ");
+					int bookNo = KeyboardUtil.nextInt();
+					System.out.print("리뷰 내용을 입력해주세요 : ");
+					String reviewContent = KeyboardUtil.nextString();
+					System.out.print("평점을 입력해주세요  : ");
+					int reviewPoint = KeyboardUtil.nextInt();
+					
+					Review review = new Review();
+					User user = new User();
+					user.setUserId(userId);
+		
+					Book book = new Book();
+					book.setNo(bookNo);
+					review.setUser(user);
+					review.setBook(book);
+					review.setContent(reviewContent);
+					review.setReviewPoint(reviewPoint);
+					
+					
+					boolean isSuccess = service.newAddReview(review);
+					if(isSuccess) {
+						System.out.println("리뷰를 등록하였습니다.");
+					} else {
+						System.out.println("리뷰 등록이 실패하였습니다.");
+					}
+					
+				} else if (reviewNum == 3) {
+					
+					System.out.println();
+					System.out.println("[책 리뷰 조회]");
+					System.out.print("책 번호를 입력해주세요");
+					int bookNo = KeyboardUtil.nextInt();
+		
+					List<Review> reviews = service.getReviewsByBookNo(bookNo);
+					if (!reviews.isEmpty()) {
+						for (Review review : reviews) {
+							Book book = review.getBook();
+							User user = review.getUser();
+							
+							System.out.println(book.getNo()+"\t"+book.getTitle()+"\t"+user.getUserId()+"\t"
+									+user.getUserName()+"\t"+review.getContent()+"\t"+review.getReviewPoint()+"\t"
+									+review.getReivewRegisteredDate());			
+							
+						}
+					}
+				
+					
+					
+				} else if (reviewNum == 4) {
+					
+				} else if (reviewNum == 5) {
+					
+				}
+				
+				
+				
+				
+				
+				
 				
 				
 			} else if (menuNum == 0) {
